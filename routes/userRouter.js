@@ -2,6 +2,7 @@ const express = require('express');
 const userRouter = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const {userModel, paymentModel} = require('../db');
 const userAuth = require('../middlewares/authUser');
 const {requiredUserBody} = require('../schema');
@@ -75,8 +76,14 @@ userRouter.post("/signin", async (req, res) => {
             const token = jwt.sign({
                 id: user._id
             }, process.env.USER_JWT_SECRET)
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 24 * 60 * 60 * 1000
+            })
             res.json({
-                token: token,
+
                 message: "user signed in successfully"
             })
         } else {
@@ -106,6 +113,13 @@ userRouter.get("/purchases", async (req, res) => {
         purchases: purchases
     })
 
+})
+
+userRouter.post("/logout", async (req, res) => {
+    res.clearCookie('token');
+    return res.json({
+        message: "user logged out successfully"
+    })
 })
 
 module.exports = userRouter;

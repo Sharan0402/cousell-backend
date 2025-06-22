@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {requiredAdminBody, requiredUserBody, requiredCourseBody} = require('../schema');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const adminAuth = require('../middlewares/authAdmin');
 
@@ -75,8 +76,14 @@ adminRouter.post("/signin", async (req, res) => {
             const token = jwt.sign({
                 id: user._id
             }, process.env.ADMIN_JWT_SECRET)
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+                maxAge: 24 * 60 * 60 * 1000
+            })
             res.json({
-                token: token,
+
                 message: "user signed in successfully"
             })
         } else {
@@ -206,6 +213,13 @@ adminRouter.put("/course", async (req, res) => {
         course: course
     });
 
+})
+
+adminRouter.post("/logout", async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({
+        message: "admin logged out successfully"
+    })
 })
 
 
