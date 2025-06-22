@@ -56,25 +56,25 @@ adminRouter.post("/signin", async (req, res) => {
 
 
     }
-    const user = await adminModel.findOne({
+    admin = await adminModel.findOne({
         email: email
     }).catch(err => {
         return res.status(500).json({
-            message: "error fetching user",
+            message: "error fetching admin",
             error: err.message
         })
     })
-    if (!user) {
+    if (!admin) {
         return res.status(400).json({
-            message: "user not found"
+            message: "admin not found"
         })
 
     }
     const password = req.body.password;
-    await bcrypt.compare(password, user.password).then(result => {
+    await bcrypt.compare(password, admin.password).then(result => {
         if (result) {
             const token = jwt.sign({
-                id: user._id
+                id: admin._id
             }, process.env.ADMIN_JWT_SECRET)
             res.cookie('token', token, {
                 httpOnly: true,
@@ -84,7 +84,7 @@ adminRouter.post("/signin", async (req, res) => {
             })
             res.json({
 
-                message: "user signed in successfully"
+                message: "admin signed in successfully"
             })
         } else {
             res.status(400).json({
