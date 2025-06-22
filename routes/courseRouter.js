@@ -1,17 +1,19 @@
 const express = require('express');
 const courseRouter = express.Router();
 const {courseModel} = require('../db');
+const userAuth = require('../middlewares/authUser');
 
 
-courseRouter.post('/purchase', (req, res) => {
+
+courseRouter.post('/purchase', userAuth,(req, res) => {
     res.json({
         message: "post purchase endpoint"
     })
 })
 
-courseRouter.get('/courses', (req, res) => {
+courseRouter.get('/preview', (req, res) => {
     res.json({
-        message: "get courses endpoint"
+        message: "preview courses endpoint"
     })
 })
 

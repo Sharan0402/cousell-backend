@@ -32,7 +32,7 @@ const courseSchema = new Schema({
         type: Number, required: true
     }, imageURL: {
         type: String,
-    }, createrId: {
+    }, creatorId: {
         type: ObjectId, required: true, ref: 'admins'
     },
 

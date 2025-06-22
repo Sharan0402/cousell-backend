@@ -1,6 +1,9 @@
 const {Router} = require('express');
 const adminRouter = Router();
 const {adinModel} = require('../db');
+const adminAuth = require('../middlewares/authAdmin');
+
+
 
 adminRouter.post("/signup", (req, res) => {
     res.json({
@@ -14,6 +17,7 @@ adminRouter.post("/signin", (req, res) => {
     })
 })
 
+adminRouter.use(adminAuth);
 
 adminRouter.post("/createCourse", (req, res) => {
     res.json({

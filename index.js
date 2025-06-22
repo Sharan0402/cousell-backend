@@ -17,11 +17,11 @@ app.use(express.json());
 const userRouter = require("./routes/userRouter");
 const courseRouter = require("./routes/courseRouter");
 const adminRouter = require("./routes/adminRouter");
-app.use("/user", userRouter);
+app.use("/api/v1/user", userRouter);
 
-app.use("/course", courseRouter);
+app.use("/api/v1/course", courseRouter);
 
-app.use("/admin",adminRouter)
+app.use("/api/vi/admin",adminRouter)
 
 
 connectToDatabase().catch(e => console.log(e));
