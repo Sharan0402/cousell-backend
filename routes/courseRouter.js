@@ -1,16 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const courseRouter = express.Router();
+const {courseModel} = require('../db');
 
-router.post('/purchase', (req, res) => {
+
+courseRouter.post('/purchase', (req, res) => {
     res.json({
         message: "post purchase endpoint"
     })
 })
 
-router.get('/courses', (req, res) => {
+courseRouter.get('/courses', (req, res) => {
     res.json({
         message: "get courses endpoint"
     })
 })
 
-module.exports = router;
+module.exports = courseRouter;
