@@ -33,7 +33,8 @@ const courseSchema = new Schema({
     }, imageURL: {
         type: String,
     }, creatorId: {
-        type: ObjectId, required: true
+        type: ObjectId, required: true,
+        ref: 'users'
     },
 
 
