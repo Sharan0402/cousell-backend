@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const {userModel, paymentModel} = require('../db');
+const {userModel, paymentModel,courseModel} = require('../db');
 const userAuth = require('../middlewares/authUser');
 const {requiredUserBody} = require('../schema');
 require('dotenv').config();
@@ -109,8 +109,13 @@ userRouter.get("/purchases", async (req, res) => {
 
         }
     )
+    const courseData = await courseModel.find({
+        _id: { $in : purchases.map(purchase => purchase.courseId) }
+    })
+
     return res.json({
-        purchases: purchases
+        purchases: purchases,
+        courses: courseData
     })
 
 })

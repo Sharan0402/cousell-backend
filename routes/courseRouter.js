@@ -5,8 +5,18 @@ const userAuth = require('../middlewares/authUser');
 
 
 
-courseRouter.post('/purchase', userAuth,async (req, res) => {
+courseRouter.post('' +
+    '/purchase', userAuth,async (req, res) => {
     const courseId = req.body.courseId;
+    prevpurchase = await paymentModel.findOne({
+        userId: req.userId,
+        courseId: courseId
+    })
+    if (prevpurchase) {
+        return res.status(400).json({
+            message: "you have already purchased this course"
+        });
+    }
     if (!courseId) {
         return res.status(400).json({
             message: "courseId is required"
